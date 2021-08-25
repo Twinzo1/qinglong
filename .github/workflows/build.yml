@@ -1,8 +1,9 @@
-name: BuildStatic
+name: build static
 
 on:
-  push:
-    branches: [ master ]
+  workflow_dispatch:
+  #push:
+   # branches: [ master ]
 
 jobs:
   build:
@@ -22,13 +23,14 @@ jobs:
       - name: copy to static repo
         env: 
           # GITHUB_REPO: gitee.com/whyour/qinglong-static
-          GITHUB_REPO: github.com/whyour/qinglong-static
+          GITHUB_REPO: github.com/Twinzo1/qinglong-static
+
         run: |
           mkdir -p static
           cd ./static 
           cp -rf ../dist ./ && cp -rf ../build ./
           git init && git add .
-          git config user.name "whyour"
-          git config user.email "imwhyour@gmail.com"
+          git config user.name "Twinzo1"
+          git config user.email "1282055288@qq.com"
           git commit --allow-empty -m "copy static at $(date +'%Y-%m-%d %H:%M:%S')"
-          git push --force --quiet "https://whyour:${{ secrets.API_TOKEN }}@${GITHUB_REPO}.git" master:master
+          git push --force --quiet "https://Twinzo1:${{ secrets.API_TOKEN }}@${GITHUB_REPO}.git" master:master
