@@ -99,7 +99,7 @@ run_normal() {
     [[ $id ]] && update_cron "\"$id\"" "0" "$$" "$log_path"
 
     eval . $file_task_before "$@" $cmd
-    if [[ $p1 == *.js -o $p1 == *.py ]]; then
+    if [[ $p1 == *.js || $p1 == *.py ]]; then
         chmod 755 ${dir_shell}/run_scripts.sh
         eval timeout -k 10s $command_timeout_time ${dir_shell}/run_scripts.sh $p1 2>&1 | tee $log_path
     else
