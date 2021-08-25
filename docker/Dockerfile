@@ -38,7 +38,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     && cp -f .env.example .env \
     && chmod 777 ${QL_DIR}/shell/*.sh \
     && chmod 777 ${QL_DIR}/docker/*.sh \
-	&& pip3 install -r ${QL_DIR}/docker/requirements.txt \
+	  && pip3 install -r ${QL_DIR}/docker/requirements.txt \
     && npm install -g pnpm \
     && pnpm install -g pm2 \
     && pnpm install -g ts-node typescript tslib \
