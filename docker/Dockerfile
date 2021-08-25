@@ -24,6 +24,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
                              python3 \
                              jq \
                              openssh \
+							 py3-lxml \
     && rm -rf /var/cache/apk/* \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
@@ -37,13 +38,14 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     && cp -f .env.example .env \
     && chmod 777 ${QL_DIR}/shell/*.sh \
     && chmod 777 ${QL_DIR}/docker/*.sh \
+	&& pip3 install -r ${QL_DIR}/docker/requirements.txt \
     && npm install -g pnpm \
     && pnpm install -g pm2 \
     && pnpm install -g ts-node typescript tslib \
     && rm -rf /root/.npm \
     && pnpm install --prod \
     && rm -rf /root/.pnpm-store \
-    && git clone -b ${QL_BRANCH} https://github.com/whyour/qinglong-static.git /static \
+    && git clone -b ${QL_BRANCH} https://github.com/Twinzo1/qinglong-static.git /static \
     && cp -rf /static/* ${QL_DIR} \
     && rm -rf /static
 ENTRYPOINT ["./docker/docker-entrypoint.sh"]

@@ -97,9 +97,14 @@ run_normal() {
 
     local id=$(cat $list_crontab_user | grep -E "$cmd_task $first_param" | perl -pe "s|.*ID=(.*) $cmd_task $first_param\.*|\1|" | head -1 | awk -F " " '{print $1}')
     [[ $id ]] && update_cron "\"$id\"" "0" "$$" "$log_path"
-    eval . $file_task_before "$@" $cmd
 
-    eval timeout -k 10s $command_timeout_time $which_program $first_param $cmd
+    eval . $file_task_before "$@" $cmd
+    if [[ $p1 == *.js -o $p1 == *.py ]]; then
+        chmod 755 ${dir_shell}/run_scripts.sh
+        eval timeout -k 10s $command_timeout_time ${dir_shell}/run_scripts.sh $p1 2>&1 | tee $log_path
+    else
+        eval timeout -k 10s $command_timeout_time $which_program $first_param $cmd
+    fi
 
     eval . $file_task_after "$@" $cmd
     [[ $id ]] && update_cron "\"$id\"" "1" "" "$log_path"

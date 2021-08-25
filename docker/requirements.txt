@@ -1,0 +1,13 @@
+certifi==2020.12.5
+chardet==4.0.0
+cssselect==1.1.0
+idna==2.10
+lxml
+pyaes==1.6.1
+pyasn1==0.4.8
+pyquery==1.4.3
+requests==2.25.1
+rsa==4.7.2
+Telethon==1.21.1
+urllib3==1.26.4
+dingtalkchatbot
