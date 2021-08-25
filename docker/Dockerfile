@@ -1,6 +1,6 @@
 FROM node:lts-alpine
-LABEL maintainer="whyour"
-ARG QL_URL=https://github.com/whyour/qinglong.git
+LABEL maintainer="whyour Twinzo1"
+ARG QL_URL=https://github.com/Twinzo1/qinglong.git
 ARG QL_BRANCH=master
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     LANG=zh_CN.UTF-8 \
@@ -24,7 +24,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
                              python3 \
                              jq \
                              openssh \
-							               py3-lxml \
+                             py3-lxml \
     && rm -rf /var/cache/apk/* \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
@@ -38,7 +38,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     && cp -f .env.example .env \
     && chmod 777 ${QL_DIR}/shell/*.sh \
     && chmod 777 ${QL_DIR}/docker/*.sh \
-	  && pip3 install -r ${QL_DIR}/docker/requirements.txt \
+    && pip3 install -r ${QL_DIR}/docker/requirements.txt \
     && npm install -g pnpm \
     && pnpm install -g pm2 \
     && pnpm install -g ts-node typescript tslib \
