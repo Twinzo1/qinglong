@@ -5,7 +5,7 @@
 @File ：enshan.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@@Version: V2.0
+@@Version: V2.1
 @Description: 恩山论坛签到
 系统环境变量设置：
 账号1：
@@ -14,6 +14,7 @@ ENSHAN_PASSWORD_1="**"
 """
 import requests
 import json
+import os
 from pyquery import PyQuery as pq
 
 
