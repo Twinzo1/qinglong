@@ -6,7 +6,11 @@
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
 @@Version: V1.01
-@Description: 
+@Description: 恩山论坛签到
+系统环境变量设置：
+账号1：
+ENSHAN_USERNAME_1="zz"
+ENSHAN_PASSWORD_1="**"
 """
 import requests
 import json
@@ -87,14 +91,25 @@ class right:
                 break
 
         return escape2dict(ret_msg)
-
+      
+def get_account_2_json(usr, pwd):
+    """
+    将从环境变量获取的账号密码拼接成json
+    :return: 字典
+    """
+    username = os.popen("env | grep {}".format(usr))
+    password = os.popen("env | grep {}".format(pwd))
+    username_list = username.read().split()
+    password_list = password.read().split()
+    username_dict = str2dict(";".join(username_list))
+    password_dict = str2dict(";".join(password_list))
+    account_dict = {}
+    for usr_key, pwd_key in zip(username_dict,password_dict):
+        account_dict[usr_key] = {"email": username_dict[usr_key], "password": password_dict[pwd_key]}
+    return account_dict
+  
 def main():
-    account = {
-        "zzzz": {"email": "",
-                  "password": ""},
-        "zzss": {"email": "",
-                  "password": ""},
-    }
+    account = get_account_2_json("ENSHAN_USERNAME_", "ENSHAN _PASSWORD_")
     msg_content = "#### **恩山论坛签到**\n\n-------\n"
     id = 0
     for key in account:
@@ -105,20 +120,14 @@ def main():
         for key in data_dict:
             msg_content = "".join((msg_content, "<font color=#DA70D6>", key, "</font>：", data_dict[key], "\n\n"))
         msg_content += "----------\n"
-
         
-    try:
-        import SendMsg
-        send = True
-    except:
-        send = False
-
-    if send:
-        token = os.getenv('DD_SIGN_IN_BOT_TOKEN')
-        secret = os.getenv('DD_SIGN_IN_BOT_SECRET')
-        send = SendMsg.SendMsg(token, secret)
-        send.msg("恩山论坛签到", msg_content)
     print(msg_content)
+    # 钉钉推送消息
+    token = os.getenv('DD_SIGN_IN_BOT_TOKEN')
+    secret = os.getenv('DD_SIGN_IN_BOT_SECRET')
+    send = SendMsg.SendMsg(token, secret)
+    send.msg("恩山论坛签到", msg_content)
+
 
     
 if __name__ == '__main__':
