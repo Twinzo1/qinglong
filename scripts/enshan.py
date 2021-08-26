@@ -5,7 +5,7 @@
 @File ：enshan.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@@Version: V2.13
+@@Version: V2.14
 @Description: 恩山论坛签到(暂时不可用，需要人机认证)
 系统环境变量设置：
 账号1：
@@ -15,6 +15,7 @@ ENSHAN_PASSWORD_1="**"
 import requests
 import json
 import os
+import SendMsg
 from pyquery import PyQuery as pq
 
 def str2dict(dict_str):
