@@ -5,7 +5,7 @@
 @File ：airconnect.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@Version: V2.02
+@Version: V2.10
 @Description: 全球加速签到
 系统环境变量设置：
 账号1：
@@ -25,7 +25,11 @@ def str2dict(dict_str):
     """
     json_data = json.dumps(dict_str)
     json_str = json.loads(json_data)
-    cookie = dict([item.split("=", 1) for item in json_str.split(";")])
+    if ";" not in json_str:
+        tmp_list = json_str.split("=", 1)
+        cookie = {tmp_list[0]: tmp_list[1]}
+    else:
+        cookie = dict([item.split("=", 1) for item in json_str.split(";")])
     return cookie
 
 def escape2dict(es_str, escapes='\n'):
