@@ -5,8 +5,12 @@
 @File ：airconnect.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@Version: V1.16
+@Version: V2.0
 @Description: 全球加速签到
+系统环境变量设置：
+账号1：
+AIRCONNECT_USERNAME_1="zz"
+AIRCONNECT_PASSWORD_1="**"
 """
 import requests
 import json
@@ -23,7 +27,6 @@ def str2dict(dict_str):
     json_str = json.loads(json_data)
     cookie = dict([item.split("=", 1) for item in json_str.split(";")])
     return cookie
-
 
 def escape2dict(es_str, escapes='\n'):
     """
@@ -96,13 +99,32 @@ class AirConnect:
         return {"签到": msg['msg']}
 
 
+def get_account_2_json(usr, pwd):
+    """
+    将从环境变量获取的账号密码拼接成json
+    :return: 字典
+    """
+    username = os.popen("env | grep {}".format(usr))
+    password = os.popen("env | grep {}".format(pwd))
+    username_list = username.read().split()
+    password_list = password.read().split()
+    username_dict = str2dict(";".join(username_list))
+    password_dict = str2dict(";".join(password_list))
+    account_dict = {}
+    for usr_key, pwd_key in zip(username_dict,password_dict):
+        account_dict[usr_key] = {"email": username_dict[usr_key], "password": password_dict[pwd_key]}
+    return account_dict
+
+
+
 def main():
-    account = {
-        "zzzz": {"email": "",
-                  "password": ""},
-        "zzss": {"email": "",
-                  "password": ""},
-    }
+    account = get_account_2_json("AIRCONNECT_USERNAME_", "AIRCONNECT_PASSWORD_")
+    # account = {
+    #     "zzzz": {"email": "",
+    #               "password": ""},
+    #     "zzss": {"email": "",
+    #               "password": ""},
+    # }
     msg_content = "#### **全球加速签到**\n\n-------\n"
     id = 0
     for key in account:
@@ -136,5 +158,3 @@ if __name__ == "__main__":
     # ac = AirConnect(your_email, your_password)
     # print(ac.check_in())
     main()
-
-
