@@ -194,7 +194,7 @@ def get_account_2_json(usr, pwd):
     password_dict = str2dict(";".join(password_list))
     account_dict = {}
     for usr_key, pwd_key in zip(username_dict,password_dict):
-        account_dict[usr_key] = {"email": username_dict[usr_key], "password": password_dict[pwd_key]}
+        account_dict[usr_key] = {"name": username_dict[usr_key], "password": password_dict[pwd_key]}
     return account_dict
 
 def main():
