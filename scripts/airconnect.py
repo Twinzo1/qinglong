@@ -5,7 +5,7 @@
 @File ：airconnect.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@Version: V2.01
+@Version: V2.02
 @Description: 全球加速签到
 系统环境变量设置：
 账号1：
@@ -119,12 +119,6 @@ def get_account_2_json(usr, pwd):
 
 def main():
     account = get_account_2_json("AIRCONNECT_USERNAME_", "AIRCONNECT_PASSWORD_")
-    # account = {
-    #     "zzzz": {"email": "",
-    #               "password": ""},
-    #     "zzss": {"email": "",
-    #               "password": ""},
-    # }
     msg_content = "#### **全球加速签到**\n\n-------\n"
     id = 0
     for key in account:
@@ -145,9 +139,4 @@ def main():
     send.msg("全球加速签到", msg_content)
 
 if __name__ == "__main__":
-    # 填写你的账号密码
-    # your_passwordr_email = ""
-    # your_password = ""
-    # ac = AirConnect(your_email, your_password)
-    # print(ac.check_in())
     main()
