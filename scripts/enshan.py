@@ -5,7 +5,7 @@
 @File ：enshan.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@@Version: V2.1
+@@Version: V2.12
 @Description: 恩山论坛签到
 系统环境变量设置：
 账号1：
