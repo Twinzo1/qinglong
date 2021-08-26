@@ -5,8 +5,8 @@
 @File ：enshan.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@@Version: V2.12
-@Description: 恩山论坛签到
+@@Version: V2.13
+@Description: 恩山论坛签到(暂时不可用，需要人机认证)
 系统环境变量设置：
 账号1：
 ENSHAN_USERNAME_1="zz"
@@ -24,7 +24,11 @@ def str2dict(dict_str):
     """
     json_data = json.dumps(dict_str)
     json_str = json.loads(json_data)
-    cookie = dict([item.split("=", 1) for item in json_str.split(";")])
+    if ";" not in json_str:
+        tmp_list = json_str.split("=", 1)
+        cookie = {tmp_list[0]: tmp_list[1]}
+    else:
+        cookie = dict([item.split("=", 1) for item in json_str.split(";")])
     return cookie
   
 def escape2dict(es_str, escapes='\n'):
@@ -119,7 +123,7 @@ def get_account_2_json(usr, pwd):
     return account_dict
   
 def main():
-    account = get_account_2_json("ENSHAN_USERNAME_", "ENSHAN _PASSWORD_")
+    account = get_account_2_json("ENSHAN_USERNAME_", "ENSHAN_PASSWORD_")
     msg_content = "#### **恩山论坛签到**\n\n-------\n"
     id = 0
     for key in account:
