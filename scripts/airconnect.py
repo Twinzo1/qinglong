@@ -5,7 +5,7 @@
 @File ：airconnect.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@Version: V2.0
+@Version: V2.01
 @Description: 全球加速签到
 系统环境变量设置：
 账号1：
@@ -136,20 +136,13 @@ def main():
         for key in data_dict:
             msg_content = "".join((msg_content, "<font color=#DA70D6>", key, "</font>：", data_dict[key], "\n\n"))
         msg_content += "----------\n"
-
         
-    try:
-        import SendMsg
-        send = True
-    except:
-        send = False
-
-    if send:
-        token = os.getenv('DD_SIGN_IN_BOT_TOKEN')
-        secret = os.getenv('DD_SIGN_IN_BOT_SECRET')
-        send = SendMsg.SendMsg(token, secret)
-        send.msg("全球加速签到", msg_content)
     print(msg_content)
+    # 钉钉推送消息
+    token = os.getenv('DD_SIGN_IN_BOT_TOKEN')
+    secret = os.getenv('DD_SIGN_IN_BOT_SECRET')
+    send = SendMsg.SendMsg(token, secret)
+    send.msg("全球加速签到", msg_content)
 
 if __name__ == "__main__":
     # 填写你的账号密码
