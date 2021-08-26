@@ -5,15 +5,30 @@
 @File ：SCUTracing.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@@Version: V1.02
+@@Version: V2.0
 @Description: 
+系统环境变量设置：
+账号1：
+SCUTRACING_USERNAME_1="zz"
+SCUTRACING_PASSWORD_1="**"
 """
 import requests
 import json
+import os
 import random
 from pyquery import PyQuery as pq
 
 
+def str2dict(dict_str):
+    """
+    等号分号(= ;)型字符串转字典
+    :return: 字典cookie
+    """
+    json_data = json.dumps(dict_str)
+    json_str = json.loads(json_data)
+    cookie = dict([item.split("=", 1) for item in json_str.split(";")])
+    return cookie
+  
 def escape2dict(es_str, escapes='\n'):
     """
     将下面两种形式的字符串分割为字典
@@ -162,12 +177,24 @@ class SCUTracing:
         return escape2dict(signmsg.text())
         # doc = pq(response.text)
 
+def get_account_2_json(usr, pwd):
+    """
+    将从环境变量获取的账号密码拼接成json
+    :return: 字典
+    """
+    username = os.popen("env | grep {}".format(usr))
+    password = os.popen("env | grep {}".format(pwd))
+    username_list = username.read().split()
+    password_list = password.read().split()
+    username_dict = str2dict(";".join(username_list))
+    password_dict = str2dict(";".join(password_list))
+    account_dict = {}
+    for usr_key, pwd_key in zip(username_dict,password_dict):
+        account_dict[usr_key] = {"email": username_dict[usr_key], "password": password_dict[pwd_key]}
+    return account_dict
 
 def main():
-    account = {
-        "zzs11": {"name": "",
-                  "password": ""},
-    }
+    account = get_account_2_json("SCUTRACING_USERNAME_", "SCUTRACING_PASSWORD_")
     msg_content = "#### **车队论坛登录**\n\n-------\n"
     id = 0
     for key in account:
@@ -180,19 +207,12 @@ def main():
                        "##### <font color=#87CEEB>**账号", str(id), "**</font>\n\n"))
         msg_content += "----------\n"
 
-    try:
-        import SendMsg
-        send = True
-    except:
-        send = False
-        pass
-
-    if send:
-        token = os.getenv('DD_SIGN_IN_BOT_TOKEN')
-        secret = os.getenv('DD_SIGN_IN_BOT_SECRET')
-        send = SendMsg.SendMsg(token, secret)
-        send.msg("车队论坛登录", msg_content)
     print(msg_content)
+    token = os.getenv('DD_SIGN_IN_BOT_TOKEN')
+    secret = os.getenv('DD_SIGN_IN_BOT_SECRET')
+    send = SendMsg.SendMsg(token, secret)
+    send.msg("车队论坛登录", msg_content)
+
 
 
 if __name__ == '__main__':
