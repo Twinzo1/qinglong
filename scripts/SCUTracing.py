@@ -5,7 +5,7 @@
 @File ：SCUTracing.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@@Version: V2.0
+@@Version: V2.01
 @Description: 
 系统环境变量设置：
 账号1：
@@ -16,6 +16,7 @@ import requests
 import json
 import os
 import random
+import SendMsg
 from pyquery import PyQuery as pq
 
 
