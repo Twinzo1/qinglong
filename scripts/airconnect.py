@@ -5,7 +5,7 @@
 @File ：airconnect.py
 @IDE ：PyCharm
 @Motto：ABC(Always Be Coding)
-@Version: V2.10
+@Version: V2.11
 @Description: 全球加速签到
 系统环境变量设置：
 账号1：
@@ -15,6 +15,7 @@ AIRCONNECT_PASSWORD_1="**"
 import requests
 import json
 import os
+import SendMsg
 from pyquery import PyQuery as pq
 
 
