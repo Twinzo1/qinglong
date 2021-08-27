@@ -143,18 +143,23 @@ run_concurrent() {
     local envs=$(eval echo "\$${third_param}")
     local array=($(echo $envs | sed 's/&/ /g'))
     single_log_time=$(date "+%Y-%m-%d-%H-%M-%S.%N")
-    for i in "${!array[@]}"; do
-        export ${third_param}=${array[i]}
-        single_log_path="$log_dir/${single_log_time}_$((i + 1)).log"
-        timeout -k 10s $command_timeout_time $which_program $first_param &>$single_log_path &
-    done
+    if [[ $first_param == *.js || $third_param == "JD_COOKIE" ]]; then
+        chmod 755 ${dir_shell}/run_scripts.sh
+        eval timeout -k 10s $command_timeout_time ${dir_shell}/run_scripts.sh $first_param 2>&1 | tee $log_path
+    else
+        for i in "${!array[@]}"; do
+            export ${third_param}=${array[i]}
+            single_log_path="$log_dir/${single_log_time}_$((i + 1)).log"
+            timeout -k 10s $command_timeout_time $which_program $first_param &>$single_log_path &
+        done
 
-    wait
-    for i in "${!array[@]}"; do
-        single_log_path="$log_dir/${single_log_time}_$((i + 1)).log"
-        eval cat $single_log_path $cmd
-        [ -f $single_log_path ] && rm -f $single_log_path
-    done
+        wait
+        for i in "${!array[@]}"; do
+            single_log_path="$log_dir/${single_log_time}_$((i + 1)).log"
+            eval cat $single_log_path $cmd
+            [ -f $single_log_path ] && rm -f $single_log_path
+        done
+     fi
 
     eval . $file_task_after "$@" $cmd
     [[ $id ]] && update_cron "\"$id\"" "1" "" "$log_path"
