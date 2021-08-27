@@ -145,7 +145,7 @@ run_concurrent() {
     single_log_time=$(date "+%Y-%m-%d-%H-%M-%S.%N")
     if [[ $first_param == *.js || $third_param == "JD_COOKIE" ]]; then
         chmod 755 ${dir_shell}/run_scripts.sh
-        eval timeout -k 10s $command_timeout_time ${dir_shell}/run_scripts.sh $first_param 2>&1 | tee $log_path
+        eval timeout -k 10s $command_timeout_time ${dir_shell}/concurrency.sh $first_param 2>&1 | tee $log_path
     else
         for i in "${!array[@]}"; do
             export ${third_param}=${array[i]}
