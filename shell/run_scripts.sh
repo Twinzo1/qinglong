@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: v4.10.13
+# Version: v4.10.14
 # 版本控制：va.b.c   a:大修改 b:影响脚本运行是否成功的修改 c:小问题
 # sed分隔符可修改
 # 青龙面板task补充
@@ -297,7 +297,8 @@ EOT
   share_code_file=`ls ${SCRIPT_DIR} | grep "\.sharebak" | grep "${SCRIPT_NAME}" | awk -F ".sharebak" '{print $1}'`
   bk_file_prefix="${SCRIPT_DIR}/${share_code_file}"
   [ -n "$share_code_file" ] && cp -f "${bk_file_prefix}.sharebak_${SCRIPT_NAME}" "${bk_file_prefix}.js" && rm -f "${bk_file_prefix}.sharebak_${SCRIPT_NAME}"
-	
+	del_tmp_file
+  
 	# 助力码收集
 	collectSharecode ${log_path}
 	rm -f ${log_path}
