@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: v4.10.15
+# Version: v4.10.16
 # 版本控制：va.b.c   a:大修改 b:影响脚本运行是否成功的修改 c:小问题
 # sed分隔符可修改
 # 青龙面板task补充
@@ -212,12 +212,12 @@ EOT
 	# 推送js复制
 	cp -f ${SCRIPT_DIR}/sendNotify.js ${NOTIFY_JS}
 	cp -f ${SCRIPT_DIR}/sendNotify.js ${NOTIFY_JS_RETURN}
+  sed -i "s/desp +=/\/\/desp +=/g" ${NOTIFY_JS_RETURN}
 	sed -i 's/text = text.match/\/\/text = text.match/g' ${NOTIFY_JS_RETURN}
 
 	# 删除旧消息
 	rm -f ${NOTIFY_CONF}*
 	
-	sed -i "s/desp +=/\/\/desp +=/g" ${NOTIFY_JS}
 	sed -i "/text = text.match/a   var fs = require('fs');fs.writeFile(\"${NOTIFY_CONF}name\", text + \"\\\n\", function(err) {if(err) {return console.log(err);}});fs.appendFile(\"${NOTIFY_CONF}\" + new Date().getTime(), desp + \"\\\n\", function(err) {if(err) {return console.log(err);}});\n  return" ${NOTIFY_JS_RETURN}
 	sed -i "s#.\/sendNotify#${NOTIFY_JS_RETURN}#g" ${SCRIPT_DIR}/${SCRIPT_NAME}_tmp.js
 	[ ! -e "./$SCRIPT" ] && echo "脚本不存在" && del_tmp_file && exit 0
