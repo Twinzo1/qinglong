@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: v4.10.16
+# Version: v4.10.17
 # 版本控制：va.b.c   a:大修改 b:影响脚本运行是否成功的修改 c:小问题
 # sed分隔符可修改
 # 青龙面板task补充
@@ -235,8 +235,10 @@ EOT
 		echo "正在处理${MSG_DIR}/${n}文本"
 		if [ $(specify_send ${MSG_DIR}/${n}) -eq 0 ];then
 			cat ${MSG_DIR}/${n} >> ${NOTIFY_CONF}
+      echo "" >> ${NOTIFY_CONF}
 		else
 			cat ${MSG_DIR}/${n} >> ${NOTIFY_CONF}spec
+      echo "" >> ${NOTIFY_CONF}spec
 		fi
 		# 清空文件
 		rm -f ${MSG_DIR}/${n}
