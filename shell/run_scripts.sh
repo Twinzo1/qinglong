@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version: v4.10.18
+# Version: v4.10.19
 # 版本控制：va.b.c   a:大修改 b:影响脚本运行是否成功的修改 c:小问题
 # sed分隔符可修改
 # 青龙面板task补充
@@ -227,7 +227,7 @@ EOT
   
     # 判断下载jd_dailybonus
 	if [[ $SCRIPT == *jd_bean_sign.js ]]; then
-      curl -L -k --retry 2 --connect-timeout 20 -o https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js > "${SCRIPT_DIR}/JD_DailyBonus.js"
+      curl -k -s -o  ${SCRIPT_DIR}/JD_DailyBonus.js --connect-timeout 10 --retry 3 https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
   fi
   
 	echo "开始运行"
