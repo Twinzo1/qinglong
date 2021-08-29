@@ -7,7 +7,7 @@
 # 通过 `test.sh jd.js delay 2` 指定延迟时间
 # `test.sh jd.js 00:00:12 2` 通过时间，指定脚本 运行时间 和 延迟时间（默认为0）
 # `test.sh jd.js 12 2` 通过分钟（小于等于十分钟，需要设置定时在上一个小时触发），指定脚本 运行时间 和 延迟时间（默认为0）
-# 版本：v3.11
+# 版本：v3.12
 
 # set -e
 
@@ -295,7 +295,11 @@ main(){
 	else
 		JK_LIST=(`echo "$JD_COOKIE" | awk -F "$" '{for(i=1;i<=NF;i++){{if(length($i)!=0) print $i}}'`)
 	fi
-	
+  # 判断下载jd_dailybonus
+	if [[ $SCRIPT == *jd_bean_sign.js ]]; then
+      curl -L -k --retry 2 --connect-timeout 20 -o https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js > "${SCRIPT_DIR}/JD_DailyBonus.js"
+  fi
+  
 	for jkl in `seq 1 ${#JK_LIST[*]}`
 	do
 		do_task ${JK_LIST[$((jkl-1))]} $jkl &
@@ -305,11 +309,10 @@ main(){
 	unset IFS
 
 	wait
-
+  
 	# 助力码
 	for num in `seq 1 ${#JK_LIST[*]}`
 	do  
-        echo $n $num
 		local share_code=`collectSharecode "${log_path}${num}"`
 		[ "${share_code}"x != ""x ] && echo ${share_code} | sed  "s/账号[0-9]/账号$n/g" | sed "s/京东号 [0-9]/京东号$n/g" >> ${LOG}
 	done
@@ -349,12 +352,12 @@ main(){
 		blank_lines2blank_line  ${NOTIFY_CONF}name
 		cat ${NOTIFY_CONF}spec
 		if [ -n "$DD_BOT_TOKEN_SPEC" -a -n "$DD_BOT_SECRET_SPEC" ]; then
-			sed -i "s/DD_BOT_TOKEN/DD_BOT_TOKEN_SPEC/g" ${NOTIFY_JS}
-			sed -i "s/DD_BOT_SECRET/DD_BOT_SECRET_SPEC/g" ${NOTIFY_JS}
-			sed -i "s/let DD_BOT_TOKEN_SPEC/let DD_BOT_TOKEN_SPEC_OLD/g" ${NOTIFY_JS}
-			sed -i "s/let DD_BOT_SECRET_SPEC/let DD_BOT_SECRET_SPEC_OLD/g" ${NOTIFY_JS}
-			sed -i "/let DD_BOT_TOKEN_SPEC_OLD/a let DD_BOT_TOKEN_SPEC = '${DD_BOT_TOKEN_SPEC}'" ${NOTIFY_JS}
-			sed -i "/let DD_BOT_SECRET_SPEC_OLD/a let DD_BOT_SECRET_SPEC = '${DD_BOT_SECRET_SPEC}'" ${NOTIFY_JS}
+        sed -i "s/DD_BOT_TOKEN/DD_BOT_TOKEN_SPEC/g" ${NOTIFY_JS}
+        sed -i "s/DD_BOT_SECRET/DD_BOT_SECRET_SPEC/g" ${NOTIFY_JS}
+        sed -i "s/let DD_BOT_TOKEN_SPEC/let DD_BOT_TOKEN_SPEC_OLD/g" ${NOTIFY_JS}
+        sed -i "s/let DD_BOT_SECRET_SPEC/let DD_BOT_SECRET_SPEC_OLD/g" ${NOTIFY_JS}
+        sed -i "/let DD_BOT_TOKEN_SPEC_OLD/a let DD_BOT_TOKEN_SPEC = '${DD_BOT_TOKEN_SPEC}'" ${NOTIFY_JS}
+        sed -i "/let DD_BOT_SECRET_SPEC_OLD/a let DD_BOT_SECRET_SPEC = '${DD_BOT_SECRET_SPEC}'" ${NOTIFY_JS}
 		fi
 		node ${NOTIFY_SCRIPT_SPEC}
 	fi
