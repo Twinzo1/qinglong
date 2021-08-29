@@ -7,7 +7,7 @@
 # 通过 `test.sh jd.js delay 2` 指定延迟时间
 # `test.sh jd.js 00:00:12 2` 通过时间，指定脚本 运行时间 和 延迟时间（默认为0）
 # `test.sh jd.js 12 2` 通过分钟（小于等于十分钟，需要设置定时在上一个小时触发），指定脚本 运行时间 和 延迟时间（默认为0）
-# 版本：v3.12
+# 版本：v3.13
 
 # set -e
 
@@ -108,7 +108,7 @@ EOT
     rm -f ${NOTIFY_CONF}*
 
     sed -i "s/desp += author/\/\/desp += author/g" ${NOTIFY_JS}
-	sed -i "/text = text.match/a   var fs = require('fs');fs.writeFile(\"${NOTIFY_CONF}name\", text + \"\\\n\", function(err) {if(err) {return console.log(err);}});fs.appendFile(\"${NOTIFY_CONF}\" + new Date().getTime(), desp + \"\\\n\", function(err) {if(err) {return console.log(err);}});\n  return" ${NOTIFY_JS_RETURN}
+	  sed -i "/text = text.match/a   var fs = require('fs');fs.writeFile(\"${NOTIFY_CONF}name\", text + \"\\\n\", function(err) {if(err) {return console.log(err);}});fs.appendFile(\"${NOTIFY_CONF}\" + new Date().getTime(), desp + \"\\\n\", function(err) {if(err) {return console.log(err);}});\n  return" ${NOTIFY_JS_RETURN}
     sed -i "s#.\/sendNotify#${NOTIFY_JS_RETURN}#g" ${SCRIPT_DIR}/${SCRIPT_NAME}_tmp.js
     [ ! -e "./$SCRIPT" ] && echo "脚本不存在" && exit 0
 }
@@ -297,7 +297,7 @@ main(){
 	fi
   # 判断下载jd_dailybonus
 	if [[ $SCRIPT == *jd_bean_sign.js ]]; then
-      curl -L -k --retry 2 --connect-timeout 20 -o https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js > "${SCRIPT_DIR}/JD_DailyBonus.js"
+      curl -k -s -o  ${SCRIPT_DIR}/JD_DailyBonus.js --connect-timeout 10 --retry 3 https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
   fi
   
 	for jkl in `seq 1 ${#JK_LIST[*]}`
